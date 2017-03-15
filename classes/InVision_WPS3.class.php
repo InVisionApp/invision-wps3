@@ -12,12 +12,12 @@ class InVision_WPS3 {
 		$this->key = $this->getOption('S3_ACCESS_KEY');
 		$this->secret = $this->getOption('S3_SECRET_KEY');
 		$this->region = $this->getOption('S3_REGION') ?: 'US Standard';
+		$this->bucket = $this->getOption('S3_BUCKET');
 		$this->bucketPath = $this->getOption('S3_BUCKET_PATH');
 
 		if (!(
-			$this->key
-			|| $this->secret
-			|| $this->bucketPath
+			$this->key && $this->secret
+			&& $this->bucket && $this->bucket
 		)) return;
 
 		try {
@@ -29,9 +29,7 @@ class InVision_WPS3 {
 					'secret' => $this->secret,
 				],
 			]))->createS3();
-		}
-
-		catch (Exception $e) {
+		} catch (Exception $e) {
 			wp_die($e);
 		}
 	}
@@ -45,5 +43,59 @@ class InVision_WPS3 {
 			return constant($key);
 
 		return false;
+	}
+
+	// -----------------------------------------------
+
+	private function genKeys($data) {
+		$path = $this->getSubdir($data['file']);
+		$keys[] = $data['file'];
+
+		if (isset($data['sizes']))
+		foreach ($data['sizes'] AS $s => $r)
+			$keys[] = $path . '/' . $r['file'];
+
+		return $keys;
+	}
+
+	protected function getSubdir($filename) {
+		preg_match("/([0-9]+\/[0-9]+)\/(.+)$/", $data['file'], $matches);
+		return $matches[1];
+	}
+
+	protected function getImageKey($path) {
+		preg_match("/\/([0-9]+\/[0-9]+\/.+)$/", $path, $matches);
+		return $matches[1];
+	}
+
+	// -----------------------------------------------
+
+	protected function upload($data) {
+		set_time_limit(120);
+
+		array_map($this->genKeys($data), function($k) {
+			$localFile = wp_upload_dir('basedir');
+			$remoteFile = 'not sure yet';
+
+			echo $localFile, '<hr />', $remoteFile;
+			exit;
+		});
+	}
+
+	protected function delete($data) {
+		array_map($this->genKeys($data), function($k) {
+			try {
+				$this->client->deleteObject([
+					'Bucket' => $this->bucket,
+					'Key' => $file,
+				]);
+			} catch (Exception $e) {
+				wp_die($e);
+			}
+		});
+	}
+
+	protected function update() {
+		//
 	}
 }
