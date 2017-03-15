@@ -1,4 +1,4 @@
-# Invison WPS3
+# Invision WPS3
 This is a simple solution to a simple problem. The plugin takes some constants, and pushes all uploads to s3. Since we're working with _existing_ s3 buckets, it will just assume they are there already and rewrite the URLs.
 
 ```wp-config.php
