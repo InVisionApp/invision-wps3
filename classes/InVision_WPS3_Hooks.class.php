@@ -49,6 +49,6 @@ class Invision_WPS3_Hooks extends Invision_WPS3 {
 		if (!$data)
 			$data['file'] = $this->getImageKey(get_attached_file($id));
 
-		$this->delete($data);
+		$this->remove($data);
 	}
 }

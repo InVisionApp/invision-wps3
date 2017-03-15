@@ -17,7 +17,7 @@ class InVision_WPS3 {
 
 		if (!(
 			$this->key && $this->secret
-			&& $this->bucket && $this->bucket
+			&& $this->bucket && $this->bucketPath
 		)) return;
 
 		try {
@@ -93,9 +93,5 @@ class InVision_WPS3 {
 				wp_die($e);
 			}
 		});
-	}
-
-	protected function update() {
-		//
 	}
 }
