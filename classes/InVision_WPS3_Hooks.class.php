@@ -17,6 +17,7 @@ class Invision_WPS3_Hooks extends Invision_WPS3 {
 	public function transformUrl($url) {
 		$dir = str_replace(home_url(), null, wp_upload_dir()['baseurl']) . '/';
 		$path = str_replace($dir, null, parse_url($url)['path']);
+
 		return $this->parseBucketPath($path);
 	}
 
@@ -48,6 +49,6 @@ class Invision_WPS3_Hooks extends Invision_WPS3 {
 		if (!$data)
 			$data['file'] = $this->getImageKey(get_attached_file($id));
 
-		$this->remove($data);
+		return $this->remove($data);
 	}
 }

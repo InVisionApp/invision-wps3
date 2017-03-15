@@ -36,10 +36,7 @@ class InVision_WPS3 {
 	}
 
 	protected function getOption($key) {
-		if (defined($key))
-			return constant($key);
-
-		return false;
+		return defined($key) ? constant($key) : false;
 	}
 
 	// -----------------------------------------------
@@ -102,7 +99,6 @@ class InVision_WPS3 {
 			try {
 				$res = $mu->upload();
 				unlink($local);
-
 				error_log('Upload complete: '. $res['ObjectURL']);
 			} catch (Aws\Exception\MultipartUploadException $e) {
 				wp_die($e->getMessage());
@@ -126,5 +122,7 @@ class InVision_WPS3 {
 				wp_die($e);
 			}
 		endforeach;
+
+		return true;
 	}
 }
