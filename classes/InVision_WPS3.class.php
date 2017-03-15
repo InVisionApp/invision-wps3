@@ -112,7 +112,7 @@ class InVision_WPS3 {
 		return true;
 	}
 
-	protected function delete($data) {
+	protected function remove($data) {
 		foreach ($this->genKeys($data) AS $k):
 			try {
 				$file = $this->parseBucketPath($k, true);
