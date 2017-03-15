@@ -4,7 +4,7 @@ class Invision_WPS3_Hooks extends Invision_WPS3 {
 		parent::__construct();
 
 		add_action('add_attachment', [$this, 'handleNonImage']);
-		add_action('delete_attachment', [$this, 'handleDelete']);
+		// add_action('delete_attachment', [$this, 'handleDelete']);
 		add_action('wp_generate_attachment_metadata', [$this, 'handleImage'], 20, 5);
 		add_action('wp_update_attachment_metadata', [$this, 'handleImage'], 20, 5);
 
@@ -17,8 +17,7 @@ class Invision_WPS3_Hooks extends Invision_WPS3 {
 	public function transformUrl($url) {
 		$dir = str_replace(home_url(), null, wp_upload_dir()['baseurl']) . '/';
 		$path = str_replace($dir, null, parse_url($url)['path']);
-
-		return str_replace('$1', $path, $this->bucketPath);
+		return $this->parseBucketPath($path);
 	}
 
 	public function transformSrcset($url) {

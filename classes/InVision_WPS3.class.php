@@ -1,7 +1,4 @@
 <?php
-use Aws\S3\MultipartUploader;
-use Aws\Exception\MultipartUploadException;
-
 class InVision_WPS3 {
 	protected
 		$client,
@@ -51,15 +48,14 @@ class InVision_WPS3 {
 		$path = $this->getSubdir($data['file']);
 		$keys[] = $data['file'];
 
-		if (isset($data['sizes']))
-		foreach ($data['sizes'] AS $s => $r)
+		foreach (@$data['sizes'] AS $s => $r)
 			$keys[] = $path . '/' . $r['file'];
 
 		return $keys;
 	}
 
 	protected function getSubdir($filename) {
-		preg_match("/([0-9]+\/[0-9]+)\/(.+)$/", $data['file'], $matches);
+		preg_match("/([0-9]+\/[0-9]+)\/(.+)$/", $filename, $matches);
 		return $matches[1];
 	}
 
@@ -68,27 +64,63 @@ class InVision_WPS3 {
 		return $matches[1];
 	}
 
+	protected function parseBucketPath($filename, $sanitize = FALSE) {
+		$url = str_replace('$1', $filename, $this->bucketPath);
+
+		if ($sanitize):
+			$pos = strrpos($url, S3_BUCKET);
+			$url = trim(substr($url, $pos + strlen(S3_BUCKET)), '/');
+		endif;
+
+		return $url;
+	}
+
 	// -----------------------------------------------
 
 	protected function upload($data) {
 		set_time_limit(120);
 
-		array_map($this->genKeys($data), function($k) {
-			$localFile = wp_upload_dir('basedir');
-			$remoteFile = 'not sure yet';
+		foreach ($this->genKeys($data) AS $k):
+			$local = wp_upload_dir()['basedir'] . '/' . $k;
+			$remote = $this->parseBucketPath($k, true);
 
-			echo $localFile, '<hr />', $remoteFile;
-			exit;
-		});
+			if (!file_exists($local))
+				continue;
+
+			$mu = new Aws\S3\MultipartUploader($this->client, $local, [
+				'bucket' => $this->bucket,
+				'key' => $this->client->encodeKey($remote),
+				'concurrency' => 10,
+				'part_size' => 5242880,
+				'acl' => 'public-read',
+				'before_initiate' => function (\Aws\Command $cmd) {
+					$cmd['CacheControl'] = 'max-page=' . 172800;
+				},
+			]);
+
+			try {
+				$res = $mu->upload();
+				unlink($local);
+
+				error_log('Upload complete: '. $res['ObjectURL']);
+			} catch (Aws\Exception\MultipartUploadException $e) {
+				wp_die($e->getMessage());
+			}
+		endforeach;
+
+		return true;
 	}
 
 	protected function delete($data) {
 		array_map($this->genKeys($data), function($k) {
 			try {
-				$this->client->deleteObject([
-					'Bucket' => $this->bucket,
-					'Key' => $file,
-				]);
+				$file = '?';
+
+				if ($this->client->doesObjectExist($this->bucket, $file))
+					$this->client->deleteObject([
+						'Bucket' => $this->bucket,
+						'Key' => $file,
+					]);
 			} catch (Exception $e) {
 				wp_die($e);
 			}
