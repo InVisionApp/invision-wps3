@@ -112,9 +112,9 @@ class InVision_WPS3 {
 	}
 
 	protected function delete($data) {
-		array_map($this->genKeys($data), function($k) {
+		foreach ($this->genKeys($data) AS $k):
 			try {
-				$file = '?';
+				$file = $this->parseBucketPath($k, true);
 
 				if ($this->client->doesObjectExist($this->bucket, $file))
 					$this->client->deleteObject([
@@ -124,6 +124,6 @@ class InVision_WPS3 {
 			} catch (Exception $e) {
 				wp_die($e);
 			}
-		});
+		endforeach;
 	}
 }
