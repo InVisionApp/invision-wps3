@@ -48,7 +48,8 @@ class InVision_WPS3 {
 		$path = $this->getSubdir($data['file']);
 		$keys[] = $data['file'];
 
-		foreach (@$data['sizes'] AS $s => $r)
+		if (isset($data['sizes']))
+		foreach ($data['sizes'] AS $s => $r)
 			$keys[] = $path . '/' . $r['file'];
 
 		return $keys;
