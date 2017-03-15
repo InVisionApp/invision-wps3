@@ -12,4 +12,4 @@ require(dirname(__FILE__) . '/vendor/autoload.php');
 
 // -----------------------------------------------
 
-new InVision_WPS3();
+(new InVision_WPS3())->bind();

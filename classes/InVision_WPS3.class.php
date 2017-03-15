@@ -1,6 +1,9 @@
 <?php
-class Invision_S3 {
-	private
+use Aws\S3\MultipartUploader;
+use Aws\Exception\MultipartUploadException;
+
+class InVision_WPS3 {
+	protected
 		$client,
 		$key, $secret,
 		$bucketPath;
@@ -17,19 +20,29 @@ class Invision_S3 {
 			|| $this->bucketPath
 		)) return;
 
-		$this->client = new Aws\Sdk([
-			'region' => $region,
-			'version' => '2006-03-01',
-			'credentials' => [
-				'key' => $this->key,
-				'secret' => $this->secret,
-			],
-		])->createS3();
+		try {
+			$this->client = (new Aws\Sdk([
+				'region' => $this->region,
+				'version' => '2006-03-01',
+				'credentials' => [
+					'key' => $this->key,
+					'secret' => $this->secret,
+				],
+			]))->createS3();
+		}
+
+		catch (Exception $e) {
+			wp_die($e);
+		}
 	}
 
-	private function getOption($key) {
+	public function bind() {
+		return new InVision_WPS3_Hooks();
+	}
+
+	protected function getOption($key) {
 		if (defined($key))
-			return getenv($key);
+			return constant($key);
 
 		return false;
 	}
