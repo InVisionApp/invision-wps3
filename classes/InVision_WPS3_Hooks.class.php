@@ -17,10 +17,13 @@ class Invision_WPS3_Hooks extends Invision_WPS3 {
 	public function transformUrl($url) {
 		$parts = parse_url(home_url());
 
+		if (isset($_GET['show_envs'])):
+			echo home_url(), '<hr />';
+			echo wp_upload_dir()['baseurl']; exit;
+		endif;
+
 		$dir = str_replace(
-			$parts['scheme'] . '://' . $parts['host'],
-			null,
-			wp_upload_dir()['baseurl']
+			home_url(), null, wp_upload_dir()['baseurl']
 		) . '/';
 
 		$path = str_replace($dir, null, parse_url($url)['path']);
