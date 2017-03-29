@@ -18,10 +18,14 @@ class Invision_WPS3_Hooks extends Invision_WPS3 {
 		$parts = parse_url(home_url());
 
 		$dir = str_replace(
-			home_url(), null, wp_upload_dir()['baseurl']
+			home_url(), null,
+			wp_upload_dir()['baseurl']
 		) . '/';
 
-		$path = str_replace($dir, null, parse_url($url)['path']);
+		$path = str_replace(
+			$dir, null,
+			str_replace($parts['path'], null, parse_url($url)['path'])
+		);
 
 		if (isset($_GET['show_envs'])):
 			echo home_url(), '<hr />', wp_upload_dir()['baseurl'], '<hr />';
