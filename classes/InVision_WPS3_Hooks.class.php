@@ -27,15 +27,6 @@ class Invision_WPS3_Hooks extends Invision_WPS3 {
 			str_replace($siteParts['path'] . '/', '/', parse_url($url)['path'])
 		);
 
-		if (isset($_GET['show_envs'])):
-			echo home_url(), '<hr />', wp_upload_dir()['baseurl'], '<hr />';
-		print_r($siteParts);
-			echo '<hr />';
-			print_r(parse_url($url));
-			echo '<hr />', $path;
-			exit;
-		endif;
-
 		return $this->parseBucketPath($path);
 	}
 
