@@ -29,7 +29,7 @@ class Invision_WPS3_Hooks extends Invision_WPS3 {
 
 		if (isset($_GET['showenvs'])) {
 			echo '<pre>';
-			echo 'dir = ', $dir, '<hr />path = ', $path;
+			echo 'dir = ', $dir, '<hr />path = ', $path, '<hr />';
 			print_r($siteParts);
 			print_r(wp_upload_dir());
 			print_r(parse_url($url));
