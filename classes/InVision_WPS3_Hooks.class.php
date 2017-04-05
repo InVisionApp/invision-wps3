@@ -15,26 +15,18 @@ class Invision_WPS3_Hooks extends Invision_WPS3 {
 	// -----------------------------------------------
 
 	public function transformUrl($url) {
-		$siteParts = parse_url(home_url());
+		$parts = parse_url(home_url());
 
-		$dir = str_replace(
-			home_url(), null,
-			wp_upload_dir()['baseurl']
-		) . '/';
+		$pattern = '/^https?:\/\/' . $parts['host'];
+		$pattern .= $parts['port'] ? ":{$parts['port']}" : '';
+		$pattern .= '/';
+
+		$dir = preg_replace($pattern, null, wp_upload_dir()['baseurl']) . '/';
 
 		$path = str_replace(
 			$dir, null,
-			str_replace($siteParts['path'] . '/', '/', parse_url($url)['path'])
+			str_replace($parts['path'] . '/', '/', parse_url($url)['path'])
 		);
-
-		if (isset($_GET['showenvs'])) {
-			echo '<pre>';
-			echo 'dir = ', $dir, '<hr />path = ', $path, '<hr />';
-			print_r($siteParts);
-			print_r(wp_upload_dir());
-			print_r(parse_url($url));
-			echo '</pre>';
-		}
 
 		return $this->parseBucketPath($path);
 	}
