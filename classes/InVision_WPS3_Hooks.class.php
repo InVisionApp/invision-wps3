@@ -22,11 +22,7 @@ class Invision_WPS3_Hooks extends Invision_WPS3 {
 		$pattern .= '/';
 
 		$dir = preg_replace($pattern, null, wp_upload_dir()['baseurl']) . '/';
-
-		$path = str_replace(
-			$dir, null,
-			str_replace($parts['path'] . '/', '/', parse_url($url)['path'])
-		);
+		$path = str_replace($dir, null, parse_url($url)['path']);
 
 		return $this->parseBucketPath($path);
 	}
