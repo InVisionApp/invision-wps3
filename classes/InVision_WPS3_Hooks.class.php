@@ -24,7 +24,7 @@ class Invision_WPS3_Hooks extends Invision_WPS3 {
 		$dir = preg_replace($pattern, null, wp_upload_dir()['baseurl']) . '/';
 		$path = str_replace($dir, null, parse_url($url)['path']);
 
-		return $this->encode($this->parseBucketPath($path));
+		return $this->parseBucketPath($this->encode($path));
 	}
 
 	public function transformSrcset($sources) {
@@ -32,6 +32,15 @@ class Invision_WPS3_Hooks extends Invision_WPS3 {
 			$source['url'] = $this->transformUrl($source['url']);
 
 		return $sources;
+	}
+
+	private function encode($str) {
+		$symbols = ['&', '$', '@', '=', ':', '+', ',', '?'];
+
+		foreach ($symbols AS $s)
+			$str = str_replace($s, urlencode($s), $str);
+
+		return $str;
 	}
 
 	// -----------------------------------------------

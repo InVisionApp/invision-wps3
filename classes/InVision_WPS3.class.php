@@ -73,15 +73,6 @@ class InVision_WPS3 {
 		return $url;
 	}
 
-	private function encode($str) {
-		$symbols = ['&', '$', '@', '=', ':', '+', ',', '?'];
-
-		foreach ($symbols AS $s)
-			$str = str_replace($s, urlencode($s), $str);
-
-		return $str;
-	}
-
 	// -----------------------------------------------
 
 	protected function upload($data) {
