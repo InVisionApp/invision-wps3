@@ -15,7 +15,7 @@ class Invision_WPS3_Hooks extends Invision_WPS3 {
 	// -----------------------------------------------
 
 	public function transformUrl($url) {
-		$parts = parse_url(home_url());
+		$parts = parse_url(site_url());
 
 		$pattern = '/^https?:\/\/' . $parts['host'];
 		$pattern .= $parts['port'] ? ":{$parts['port']}" : '';
