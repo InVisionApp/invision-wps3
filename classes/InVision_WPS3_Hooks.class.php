@@ -24,7 +24,7 @@ class Invision_WPS3_Hooks extends Invision_WPS3 {
 		$dir = preg_replace($pattern, null, wp_upload_dir()['baseurl']) . '/';
 		$path = str_replace($dir, null, parse_url($url)['path']);
 
-		return $this->parseBucketPath($path);
+		return $this->encode($this->parseBucketPath($path));
 	}
 
 	public function transformSrcset($sources) {

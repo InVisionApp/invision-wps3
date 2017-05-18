@@ -63,7 +63,7 @@ class InVision_WPS3 {
 	}
 
 	protected function parseBucketPath($filename, $sanitize = FALSE) {
-		$url = str_replace('$1', $this->encode($filename), $this->bucketPath);
+		$url = str_replace('$1', $filename, $this->bucketPath);
 
 		if ($sanitize):
 			$pos = strrpos($url, S3_BUCKET);
