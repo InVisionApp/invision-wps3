@@ -108,6 +108,23 @@ class InVision_WPS3 {
 		return true;
 	}
 
+	protected function download($id, $local) {
+		try {
+			$file = $this->parseBucketPath(wp_get_attachment_metadata($id)['file'], true);
+
+			if ($this->client->doesObjectExist($this->bucket, $file))
+				$this->client->getObject([
+					'Bucket' => $this->bucket,
+					'Key' => $file,
+					'SaveAs' => $local,
+				]);
+		} catch (Exception $e) {
+			wp_die($e);
+		}
+
+		return $local;
+	}
+
 	protected function remove($data) {
 		foreach ($this->genKeys($data) AS $k):
 			try {

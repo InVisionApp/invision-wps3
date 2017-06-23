@@ -5,8 +5,10 @@ class Invision_WPS3_Hooks extends Invision_WPS3 {
 
 		add_action('add_attachment', [$this, 'handleNonImage']);
 		add_action('delete_attachment', [$this, 'handleDelete']);
+
 		add_action('wp_generate_attachment_metadata', [$this, 'handleImage'], 20, 5);
 		add_action('wp_update_attachment_metadata', [$this, 'handleImage'], 20, 5);
+		add_filter('get_attached_file', [$this, 'handleRegen'], 10, 4);
 
 		add_action('wp_get_attachment_url', [$this, 'transformUrl']);
 		add_action('wp_calculate_image_srcset', [$this, 'transformSrcset']);
@@ -56,6 +58,15 @@ class Invision_WPS3_Hooks extends Invision_WPS3 {
 	public function handleImage($data) {
 		if ($data) $this->upload($data);
 		return $data;
+	}
+
+	public function handleRegen($url, $id) {
+		if (
+			$_POST['action'] === 'regeneratethumbnail'
+			&& ($file = $this->download($id, $url))
+		) return $file;
+
+		return $url;
 	}
 
 	public function handleDelete($id) {
