@@ -66,7 +66,7 @@ class Invision_WPS3_Hooks extends Invision_WPS3 {
 			&& ($file = $this->download($id, $url))
 		) return $file;
 
-		return this->transformUrl($url);
+		return $this->transformUrl($url);
 	}
 
 	public function handleDelete($id) {
