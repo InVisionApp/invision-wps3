@@ -62,7 +62,8 @@ class Invision_WPS3_Hooks extends Invision_WPS3 {
 
 	public function handleRegen($url, $id) {
 		if (
-			$_POST['action'] === 'regeneratethumbnail'
+			isset($_POST['action'])
+			&& $_POST['action'] === 'regeneratethumbnail'
 			&& ($file = $this->download($id, $url))
 		) return $file;
 
