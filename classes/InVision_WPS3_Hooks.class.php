@@ -72,12 +72,14 @@ class Invision_WPS3_Hooks extends Invision_WPS3 {
       $pattern = '/^https?:\/\/'.$parts['host'];
       $pattern .= $parts['port'] ? ":{$parts['port']}" : '';
       $pattern .= '/';
+
+      $dir  = preg_replace($pattern, null, wp_upload_dir()['baseurl']).'/';
+      $path = str_replace($dir, null, parse_url($url)['path']);
+
+      return $this->parseBucketPath($this->encode($path));
     }
 
-    $dir  = preg_replace($pattern, null, wp_upload_dir()['baseurl']).'/';
-    $path = str_replace($dir, null, parse_url($url)['path']);
-
-    return $this->parseBucketPath($this->encode($path));
+    return $url;
   }
 
   private function encode($str) {
