@@ -7,8 +7,8 @@
  * Author URI: http://www.invisionapp.com
  */
 
-require(dirname(__FILE__) . '/vendor/AWS/aws-autoloader.php');
-require(dirname(__FILE__) . '/vendor/autoload.php');
+require dirname(__FILE__).'/vendor/AWS/aws-autoloader.php';
+require dirname(__FILE__).'/vendor/autoload.php';
 
 // -----------------------------------------------
 
