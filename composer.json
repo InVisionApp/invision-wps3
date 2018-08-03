@@ -1,0 +1,17 @@
+{
+    "name": "outthislife/invision-wps3",
+    "authors": [
+        {
+            "name": "Talasan Nicholson",
+            "email": "talasan.nicholson@gmail.com"
+        }
+    ],
+    "require": {
+        "aws/aws-sdk-php": "^3.64"
+    },
+    "autoload": {
+        "psd-4": {
+            "InvWPS3\\": "src/"
+        }
+    }
+}
