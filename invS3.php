@@ -7,5 +7,4 @@
  * Author URI: http://www.invisionapp.com
  */
 
-require_once 'vendor/autoload.php';
 (new \InvWPS3\Bindings())->bind();
