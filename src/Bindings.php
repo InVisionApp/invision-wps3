@@ -35,7 +35,7 @@ class Bindings {
   }
 
   public function bind() {
-    return new InVision_WPS3_Hooks();
+    return new Hooks();
   }
 
   protected function download($id, $local) {
