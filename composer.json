@@ -1,5 +1,6 @@
 {
     "name": "InVisionApp/invision-wps3",
+    "type": "wordpress-plugin",
     "authors": [
         {
             "name": "Talasan Nicholson",
@@ -7,10 +8,11 @@
         }
     ],
     "require": {
-        "aws/aws-sdk-php": "^3.64"
+        "aws/aws-sdk-php": "^3.64",
+        "composer/installers": "^1.0"
     },
     "autoload": {
-        "psd-4": {
+        "psr-4": {
             "InvWPS3\\": "src/"
         }
     }
