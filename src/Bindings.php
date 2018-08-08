@@ -21,7 +21,7 @@ class Bindings {
     }
 
     try {
-      $this->client = (new Aws\Sdk([
+      $this->client = (new \Aws\Sdk([
         'region'      => $this->region,
         'version'     => '2006-03-01',
         'credentials' => [
@@ -113,7 +113,7 @@ class Bindings {
         continue;
       }
 
-      $mu = new Aws\S3\MultipartUploader($this->client, $local, [
+      $mu = new \Aws\S3\MultipartUploader($this->client, $local, [
         'bucket'          => $this->bucket,
         'key'             => $this->client->encodeKey($remote),
         'concurrency'     => 10,
@@ -128,7 +128,7 @@ class Bindings {
         $res = $mu->upload();
         unlink($local);
         error_log('Upload complete: '.$res['ObjectURL']);
-      } catch (Aws\Exception\MultipartUploadException $e) {
+      } catch (\Aws\Exception\MultipartUploadException $e) {
         wp_die($e->getMessage());
       }
     endforeach;
