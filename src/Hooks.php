@@ -72,7 +72,7 @@ class Hooks extends Bindings {
 
     if (isset($parts['host'])) {
       $pattern = '/^https?:\/\/'.$parts['host'];
-      $pattern .= $parts['port'] ? ":{$parts['port']}" : '';
+      $pattern .= isset($parts['port']) ? ":{$parts['port']}" : '';
       $pattern .= '/';
 
       $dir  = preg_replace($pattern, null, wp_upload_dir()['baseurl']).'/';
