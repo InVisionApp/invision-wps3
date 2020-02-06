@@ -64,16 +64,19 @@ class InVision_WPS3 {
   }
 
   protected function getSubdir($filename) {
-    preg_match("/([0-9]+\/[0-9]+)\/(.+)$/", $filename, $matches);
-    return $matches[1];
+    if (preg_match("/([0-9]+\/[0-9]+)\/(.+)$/", $filename, $matches) === 1) {
+      return (count($matches) > 1) ? $matches[1] : null;
+    }
+    return null;
   }
 
   protected function parseBucketPath($filename, $sanitize = false) {
+    $filename = trim($filename, '/');
     $url = str_replace('$1', $filename, $this->bucketPath);
 
     if ($sanitize):
-      $pos = strrpos($url, S3_BUCKET);
-      $url = trim(substr($url, $pos + strlen(S3_BUCKET)), '/');
+      $pos = strrpos($url, $this->bucket);
+      $url = trim(substr($url, $pos + strlen($this->bucket)), '/');
     endif;
 
     return $url;
@@ -90,7 +93,7 @@ class InVision_WPS3 {
             'Key'    => $file
           ]);
         }
-      } catch (Exception $e) {
+      } catch (\Exception $e) {
         wp_die($e);
       }
     endforeach;
@@ -142,7 +145,7 @@ class InVision_WPS3 {
 
     if (isset($data['sizes'])) {
       foreach ($data['sizes'] as $s => $r) {
-        $keys[] = $path.'/'.$r['file'];
+        $keys[] = (!is_null($path)) ? $path.'/'.$r['file'] : $r['file'];
       }
     }
 
