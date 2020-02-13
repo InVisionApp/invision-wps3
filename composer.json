@@ -1,6 +1,6 @@
 {
   "name": "InVisionApp/invision-wps3",
-  "version": "2.0.3",
+  "version": "2.0.5",
   "homepage": "https://github.com/InVisionApp/invision-wps3",
   "type": "wordpress-plugin",
   "require": {
