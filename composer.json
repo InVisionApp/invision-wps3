@@ -1,5 +1,5 @@
 {
-  "name": "InVisionApp/invision-wps3",
+  "name": "invisionapp/invision-wps3",
   "version": "2.0.5",
   "homepage": "https://github.com/InVisionApp/invision-wps3",
   "type": "wordpress-plugin",
@@ -13,8 +13,10 @@
       "InvWPS3\\": "src/"
     }
   },
-  "dist": {
-    "url": "git@bitbucket.org:InVisionApp/invision-wps3.git",
-    "type": "git"
-  }
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "git@github.com:InVisionApp/invision-wps3.git"
+    }
+  ]
 }
