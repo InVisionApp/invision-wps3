@@ -1,0 +1,22 @@
+{
+  "name": "invisionapp/invision-wps3",
+  "version": "2.0.6",
+  "homepage": "https://github.com/InVisionApp/invision-wps3",
+  "type": "wordpress-plugin",
+  "require": {
+    "php": ">=5.4.0",
+    "aws/aws-sdk-php": "^3.64",
+    "composer/installers": "~1.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "InvWPS3\\": "src/"
+    }
+  },
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "git@github.com:InVisionApp/invision-wps3.git"
+    }
+  ]
+}
