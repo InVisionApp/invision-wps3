@@ -123,7 +123,7 @@ class Bindings {
         'part_size'       => 5242880,
         'acl'             => 'public-read',
         'before_initiate' => function (\Aws\Command $cmd) {
-          $cmd['CacheControl'] = 'max-page='. 172800;
+          $cmd['CacheControl'] = 'public, max-age='. 600;
         }
       ]);
 
